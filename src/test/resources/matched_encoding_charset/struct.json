@@ -1,0 +1,13 @@
+{
+  "vertices": [
+    {
+      "label": "software",
+      "input": {
+        "type": "file",
+        "path": "${store_path}/vertex_software.csv",
+        "format": "CSV",
+        "charset": "GBK"
+      }
+    }
+  ]
+}

@@ -20,6 +20,7 @@
 package com.baidu.hugegraph.loader.test.functional;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -27,9 +28,13 @@ import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+
+import com.baidu.hugegraph.util.Log;
 
 public class FileUtil {
 
+    private static final Logger LOG = Log.logger(FileUtil.class);
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     public static String newCSVLine(Object... parts) {
@@ -61,13 +66,15 @@ public class FileUtil {
         } catch (IOException e) {
             throw new RuntimeException(String.format(
                       "Failed to append lines '%s' to file '%s'",
-                      lines, fileName), e);
+                      Arrays.asList(lines), fileName), e);
         }
     }
 
     public static void delete(String fileName) {
         try {
             FileUtils.forceDelete(FileUtils.getFile(fileName));
+        } catch (FileNotFoundException ignored) {
+            // pass
         } catch (IOException e) {
             throw new RuntimeException(String.format(
                       "Failed to delete file '%s'", fileName), e);
